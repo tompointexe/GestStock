@@ -4,15 +4,18 @@ session_start();
 require('config.php');
 if(isset($_POST['AjouterObjet']))
 {
-
+	if($_POST['id'] != null AND $_POST['name'] != null AND $_POST['desc'] != null AND $_POST['quantity'] != null){
 			$id = htmlspecialchars($_POST['id']);
 			$denomination = htmlspecialchars($_POST['name']);
 			$description = htmlspecialchars($_POST['desc']);
 			$quantite = htmlspecialchars($_POST['quantity']);
 
-				$insertmbr = $bdd->prepare("INSERT INTO objets(barcode, denomination, description, quantité) VALUES(?, ?, ?, ?)");
-				$insertmbr->execute(array($id, $denomination, $description, $quantite));
+				$insertobj = $bdd->prepare("INSERT INTO objets(barcode, denomination, description, quantité) VALUES(?, ?, ?, ?)");
+				$insertobj->execute(array($id, $denomination, $description, $quantite));
 				$ok = "L'objet a bien été ajouté";
+	 }else {
+	 	$erreur = "Vous devez remplir tout les champs"
+	 }
 }
 ?>
 <!DOCTYPE html>
@@ -55,31 +58,26 @@ if(isset($_POST['AjouterObjet']))
 		 	<?php
 				if(isset($ok)){
 					echo '<h1><font color="green">'.$ok."</font></h1>";
+				}else {
+					if(isset($erreur)){
+						echo '<h1><font color="red">'.$erreur."</font></h1>";
+					}
 				}
 			?>
           <form method="POST" class="text-left">
             <div class="form-group"> <label for="form16" class="text-light">Nom de l'objet</label> <input type="text" name="name" class="form-control" id="name" placeholder="TV Samsung"> </div>
-			<div class="form-group"> <label for="form16" class="text-light">description</label> <input type="text" name="desc" class="form-control" id="desc" placeholder="Ecran de télévision samsung averc cable"> </div>
-			<div class="form-group"> <label for="form16" class="text-light">Quantité totale</label> <input type="text" name="quantity" class="form-control" id="quantity" placeholder="50"> </div>
-            <div class="form-group"> <label for="form17" class="text-light">Code bare</label> <input type="text" name="id" class="form-control" id="barcode" placeholder="Id de l'objet">
-              <main class="wrapper" style="padding-top:2em">
-                <section class="container" id="demo-content">
-                  <div>
-                    <div class="row">
-                      <div class="col-md-4"><a class="btn text-light btn-primary" id="startButton">Démarer le scanner</a></div>
-                      <div class="col-md-4"></div>
-                      <div class="col-md-4"></div>
-                    </div>
-                    <div class="col-md-12"></div><video id="video" width="300" height="200" style="border: 1px solid gray"></video>
-                  </div>
-                  <div id="sourceSelectPanel" style="display:none">
-				  <label class="text-light" for="sourceSelect">Change video source:</label></br>
-                    <select id="sourceSelect" style="max-width:400px">
-                    </select>
-                  </div>
-                </section>
-              </main>
-            </div>
+						<div class="form-group"> <label for="form16" class="text-light">description</label> <input type="text" name="desc" class="form-control" id="desc" placeholder="Ecran de télévision samsung averc cable"> </div>
+						<div class="form-group"> <label for="form16" class="text-light">Quantité totale</label> <input type="text" name="quantity" class="form-control" id="quantity" placeholder="50"> </div>
+            <div class="form-group"> <label for="form17" class="text-light">Code bare</label> <input type="text" name="id" class="form-control" id="barcode" placeholder="Id de l'objet"></div>
+            <div class="form-group">
+              <div class="col-md-4"><a class="btn text-light btn-primary" id="startButton">Démarer le scanner</a></div>
+							<br>
+								<div id="sourceSelectPanel" style="display:none">
+											<label class="text-light" for="sourceSelect">Change video source:</label></br>
+											<select id="sourceSelect" style="max-width:400px"></select>
+								</div>
+              </div>
+              <video id="video" width="300" height="200" style="border: 1px solid gray"></video> <br>
             <button type="submit" name="AjouterObjet" class="btn btn-primary">Ajouter l'objet au stock</button>
           </form>
           <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
