@@ -1,9 +1,6 @@
 <?php
-session_start();
-
 require('config.php');
-if(isset($_POST['AjouterObjet']))
-{
+if(isset($_POST['AjouterObjet'])){
 	if($_POST['id'] != null AND $_POST['name'] != null AND $_POST['desc'] != null AND $_POST['quantity'] != null){
 			$id = htmlspecialchars($_POST['id']);
 			$denomination = htmlspecialchars($_POST['name']);
@@ -14,17 +11,18 @@ if(isset($_POST['AjouterObjet']))
 				$insertobj->execute(array($id, $denomination, $description, $quantite));
 				$ok = "L'objet a bien été ajouté";
 	 }else {
-	 	$erreur = "Vous devez remplir tout les champs"
+	 	$erreur = "Vous devez remplir tout les champs";
 	 }
 }
 ?>
-<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="https://static.pingendo.com/bootstrap/bootstrap-4.3.1.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="ajouter.css" type="text/css">
   <title>Ajouter un objet au stock</title>
 </head>
 
@@ -37,10 +35,10 @@ if(isset($_POST['AjouterObjet']))
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar11">
-				<ul class="navbar-nav mr-auto">
-          <li class="nav-item"> <a class="nav-link" href="inventaire.html">Inventaire</a> </li>
-          <li class="nav-item"> <a class="nav-link" href="ajouter.php">Ajouter un objet</a> </li>
-          <li class="nav-item"> <a class="nav-link" href="search.php">Scanner un objet<br></a> </li>
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item"> <a class="nav-link" href="interface.php"> <i class="fa fa-lg fa-list-ul"></i> Inventaire</a> </li>
+          <li class="nav-item active"> <a class="nav-link" href="ajouter.php"> <i class="fa fa-lg fa-plus"></i> Ajouter un objet</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="search.php"> <i class="fa fa-lg fa-barcode"></i> Scanner un objet<br></a> </li>
         </ul>
         <ul class="navbar-nav ml-auto">
           <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Dropdown link </a>
@@ -53,7 +51,7 @@ if(isset($_POST['AjouterObjet']))
   <div class="py-5 text-center bg-dark">
     <div class="container">
       <div class="row">
-        <div class="mx-auto col-lg-6 col-10">
+        <div class="mx-auto">
           <h1 class="text-light">Creation d'un objet dans le stock</h1>
 		 	<?php
 				if(isset($ok)){
@@ -65,19 +63,62 @@ if(isset($_POST['AjouterObjet']))
 				}
 			?>
           <form method="POST" class="text-left">
-            <div class="form-group"> <label for="form16" class="text-light">Nom de l'objet</label> <input type="text" name="name" class="form-control" id="name" placeholder="TV Samsung"> </div>
-						<div class="form-group"> <label for="form16" class="text-light">description</label> <input type="text" name="desc" class="form-control" id="desc" placeholder="Ecran de télévision samsung averc cable"> </div>
-						<div class="form-group"> <label for="form16" class="text-light">Quantité totale</label> <input type="text" name="quantity" class="form-control" id="quantity" placeholder="50"> </div>
-            <div class="form-group"> <label for="form17" class="text-light">Code bare</label> <input type="text" name="id" class="form-control" id="barcode" placeholder="Id de l'objet"></div>
             <div class="form-group">
-              <div class="col-md-4"><a class="btn text-light btn-primary" id="startButton">Démarer le scanner</a></div>
-							<br>
-								<div id="sourceSelectPanel" style="display:none">
+			<label for="form16" class="text-light">Nom de l'objet</label>
+			<input type="text" name="name" class="form-control" id="name" placeholder="TV Samsung">
+			</div>
+			<div class="form-group">
+			<label for="form16" class="text-light">description</label>
+			<input type="text" name="desc" class="form-control" id="desc" placeholder="Ecran de télévision samsung averc cable">
+			</div>
+			<div class="form-group">
+			<label for="form16" class="text-light">Quantité totale</label>
+			<input type="text" name="quantity" class="form-control" id="quantity" placeholder="50">
+			</div>
+      <div class="form-group">
+			<label for="form17" class="text-light">Code barre</label> <input type="text" name="id" class="form-control" id="barcode" placeholder="Id de l'objet">
+			</div>
+			<div class="py-5">
+				<div class="container">
+					<div class="row">
+		   			<div class="col-md-6">
+							<div class="panel panel-primary autocollapse">
+								<div class="panel-heading clickable">
+									<h3 class="panel-title text-light">
+										Scanner de code barre
+									</h3>
+								</div>
+								<div class="panel-body">
+									<div class="form-group">
+										<div class="col-md-4">
+											<a class="btn text-light btn-primary" id="startButton">Démarer le scanner</a>
+										</div>
+										<br>
+										<div id="sourceSelectPanel" style="display:none">
 											<label class="text-light" for="sourceSelect">Change video source:</label></br>
 											<select id="sourceSelect" style="max-width:400px"></select>
+										</div>
+										<video id="video" width="300" height="200" style="border: 1px solid gray"></video>
+										<br>
+										</div>
 								</div>
-              </div>
-              <video id="video" width="300" height="200" style="border: 1px solid gray"></video> <br>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="panel panel-primary autocollapse">
+								<div class="panel-heading clickable">
+									<h3 class="panel-title text-light">
+										Generateur de codes barres
+									</h3>
+								</div>
+								<div class="panel-body">
+									<div class="alert alert-danger" role="alert">En cours de developpement</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
             <button type="submit" name="AjouterObjet" class="btn btn-primary">Ajouter l'objet au stock</button>
           </form>
           <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
@@ -126,11 +167,34 @@ if(isset($_POST['AjouterObjet']))
             })
 
           </script>
+		  <script type="text/javascript">
+					$(document).on('click', '.panel div.clickable', function (e) {
+						var $this = $(this); //Heading
+						var $panel = $this.parent('.panel');
+						var $panel_body = $panel.children('.panel-body');
+						var $display = $panel_body.css('display');
+
+						if ($display == 'block') {
+							$panel_body.slideUp();
+						} else if($display == 'none') {
+							$panel_body.slideDown();
+						}
+					});
+
+					$(document).ready(function(e){
+						var $classy = '.panel.autocollapse';
+
+						var $found = $($classy);
+						$found.find('.panel-body').hide();
+						$found.removeClass($classy);
+					});
+          </script>
         </div>
       </div>
     </div>
   </div>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>

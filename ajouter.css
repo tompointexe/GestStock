@@ -1,0 +1,17 @@
+.clickable{
+    cursor: pointer;
+}
+
+.panel-gray{
+border-color:purple;
+}
+
+.panel-gray .panel-heading{
+border-color:gray;
+background:gray;
+color:#808080;
+}
+
+.panel-gray .panel-body a{
+color:white;
+}

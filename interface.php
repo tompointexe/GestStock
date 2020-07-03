@@ -2,16 +2,23 @@
 session_start();
 require('config.php');
 $req = $bdd->query('SELECT * FROM objets');
+
+if ($_COOKIE['IdUserStock'] > 0) {
+    $id = $_COOKIE['IdUserStock'];
+	$requser = $bdd->prepare("SELECT * FROM membre WHERE id = ? ");
+	$requser->execute(array($id));
+	$userinfo = $requser->fetch();
+}
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="https://static.pingendo.com/bootstrap/bootstrap-4.3.1.css">
-  <title>Gestion du stock</title>
 </head>
 
 <body>
@@ -24,12 +31,12 @@ $req = $bdd->query('SELECT * FROM objets');
       </button>
       <div class="collapse navbar-collapse" id="navbar11">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item"> <a class="nav-link" href="inventaire.html">Inventaire</a> </li>
-          <li class="nav-item"> <a class="nav-link" href="ajouter.php">Ajouter un objet</a> </li>
-          <li class="nav-item"> <a class="nav-link" href="search.php">Scanner un objet<br></a> </li>
+          <li class="nav-item active"> <a class="nav-link" href="interface.php"><i class="fa fa-lg fa-list-ul"></i> Inventaire</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="ajouter.php"> <i class="fa fa-lg fa-plus"></i> Ajouter un objet</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="search.php"> <i class="fa fa-lg fa-barcode"></i> Scanner un objet<br></a> </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Dropdown link </a>
+          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="http://stocks.example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo $userinfo['username'];?> </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Something else here</a> </div>
           </li>
         </ul>
@@ -47,7 +54,7 @@ $req = $bdd->query('SELECT * FROM objets');
                   <th>Objet</th>
                   <th>Description</th>
                   <th>Numero dans le stock</th>
-				          <th>Quantité en stock</th>
+				  <th>Quantité en stock</th>
                   <th>Plus d'info</th>
                 </tr>
               </thead>
