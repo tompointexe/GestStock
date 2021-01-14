@@ -6,12 +6,12 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
 	$req->execute(array($objid));
 	$objinfo = $req->fetch();
 	if(isset($_POST['moins1'])){
-  $newstate = "false";
+  $newstate = 0;
 	$updatecount = $bdd->prepare("UPDATE objets SET instock = ? WHERE id = ? ");
   $updatecount->execute(array($newstate, $objid));
 	}
 	if(isset($_POST['plus1'])){
-  $newstate = "true";
+  $newstate = 1;
 	$updatecount = $bdd->prepare("UPDATE objets SET instock = ? WHERE id = ? ");
   $updatecount->execute(array($newstate, $objid));
 	}
@@ -67,13 +67,13 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
              <li class="page-item"> <button type="submit" name="moins1" class="btn btn-primary">Sortir du stock</button></li>
              <li class="page-item"> <a class="page-link"><?php 
 		          	if(isset($newstate)){
-                  if($newstate == "true"){
+                  if($newstate == 1){
                     echo "En stock";
                   }else{
                     echo "Hors stock";
                   }
 			          }else{
-                  if($objinfo['instock'] == "true"){
+                  if($objinfo['instock'] == 1){
                     echo "En stock";
                   }else{
                     echo "Hors stock";

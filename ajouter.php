@@ -7,7 +7,7 @@ if(isset($_POST['AjouterObjet'])){
 			$description = htmlspecialchars($_POST['desc']);
 			$quantite = htmlspecialchars($_POST['quantity']);
 
-				$insertobj = $bdd->prepare("INSERT INTO objets(barcode, denomination, description, quantité) VALUES(?, ?, ?, ?)");
+				$insertobj = $bdd->prepare("INSERT INTO objets(barcode, denomination, description, instock) VALUES(?, ?, ?, ?)");
 				$insertobj->execute(array($id, $denomination, $description, $quantite));
 				$ok = "L'objet a bien été ajouté";
 	 }else {
@@ -72,8 +72,8 @@ if(isset($_POST['AjouterObjet'])){
 			<input type="text" name="desc" class="form-control" id="desc" placeholder="Ecran de télévision samsung averc cable">
 			</div>
 			<div class="form-group">
-			<label for="form16" class="text-light">Quantité totale</label>
-			<input type="text" name="quantity" class="form-control" id="quantity" placeholder="50">
+			<label for="form16" class="text-light">En stock ?</label>
+			<input type="text" name="quantity" class="form-control" id="quantity" placeholder="A changer par un dropdown avec oui ou non ou inconnu">
 			</div>
       <div class="form-group">
 			<label for="form17" class="text-light">Code barre</label> <input type="text" name="id" class="form-control" id="barcode" placeholder="Id de l'objet">

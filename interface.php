@@ -3,7 +3,7 @@ require('config.php');
 $req = $bdd->query('SELECT * FROM objets');
 
 if (isset( $_SESSION[ 'id' ] ) && $_SESSION['id'] > 0) {
-  $id = $_SESSION['id'];
+    $id = $_SESSION['id'];
 	$requser = $bdd->prepare("SELECT * FROM membre WHERE `id` = ? ");
 	$requser->execute(array($id));
 	$userinfo = $requser->fetch();
@@ -30,13 +30,13 @@ if (isset( $_SESSION[ 'id' ] ) && $_SESSION['id'] > 0) {
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active"> <a class="nav-link" href="interface.php"><i class="fa fa-lg fa-list-ul"></i> Inventaire</a> </li>
           <?php
-			      if($userinfo['admin'] == 1){ ?>
+			      if($userinfo['admin'] = 1){ ?>
               <li class="nav-item"> <a class="nav-link" href="ajouter.php"> <i class="fa fa-lg fa-plus"></i> Ajouter un objet</a> </li>
 			      <?php }else{} ?>
           <li class="nav-item"> <a class="nav-link" href="search.php"> <i class="fa fa-lg fa-barcode"></i> Scanner un objet<br></a> </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo $_SESSION['pseudo'];?> </a>
+          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> "UserName" </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Something else here</a> </div>
           </li>
         </ul>
@@ -53,8 +53,8 @@ if (isset( $_SESSION[ 'id' ] ) && $_SESSION['id'] > 0) {
                 <tr>
                   <th>Objet</th>
                   <th>Description</th>
-                  <th>Numero dans le stock</th>
-				          <th>En stock ?</th>
+                  <th>Code bare</th>
+				  <th>En stock ?</th>
                   <th>Plus d'info</th>
                 </tr>
               </thead>
@@ -63,7 +63,7 @@ if (isset( $_SESSION[ 'id' ] ) && $_SESSION['id'] > 0) {
                 <td><?php echo $row['denomination']; ?></td>
                 <td><?php echo $row['description']; ?></td>
                 <td><?php echo $row['barcode']; ?></td>
-                <td><?php if($row['instock'] == "true"){
+                <td><?php if($row['instock'] == 1){
                        echo "Oui";
                     }else{
                        echo "Non";
