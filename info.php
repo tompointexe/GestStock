@@ -6,14 +6,14 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
 	$req->execute(array($objid));
 	$objinfo = $req->fetch();
 	if(isset($_POST['moins1'])){
-	$newquantity = $objinfo['quantité'] - 1;
-	$updatecount = $bdd->prepare("UPDATE objets SET quantité = ? WHERE id = ? ");
-    $updatecount->execute(array($newquantity, $objid));
+  $newstate = "false";
+	$updatecount = $bdd->prepare("UPDATE objets SET instock = ? WHERE id = ? ");
+  $updatecount->execute(array($newstate, $objid));
 	}
 	if(isset($_POST['plus1'])){
-	$newquantity = $objinfo['quantité'] + 1;
-	$updatecount = $bdd->prepare("UPDATE objets SET quantité = ? WHERE id = ? ");
-    $updatecount->execute(array($newquantity, $objid));
+  $newstate = "true";
+	$updatecount = $bdd->prepare("UPDATE objets SET instock = ? WHERE id = ? ");
+  $updatecount->execute(array($newstate, $objid));
 	}
 	
 	
@@ -41,7 +41,7 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
           <li class="nav-item"> <a class="nav-link" href="search.php"> <i class="fa fa-lg fa-barcode"></i> Scanner un objet<br></a> </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Dropdown link </a>
+          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo $_SESSION['pseudo'];?> </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Something else here</a> </div>
           </li>
         </ul>
@@ -62,19 +62,27 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-		<form method="POST">
+		    <form method="POST">
           <ul class="pagination">
-            <li class="page-item"> <button type="submit" name="moins1" class="btn btn-primary">-1</button></li>
-            <li class="page-item"> <a class="page-link"><?php 
-			if(isset($newquantity)){
-			echo $newquantity;
-			}else{
-			echo $objinfo['quantité'];
-			}	
-			?></a></li>
-            <li class="page-item"> <button type="submit" name="plus1" class="btn btn-primary">+1</button></li>
+             <li class="page-item"> <button type="submit" name="moins1" class="btn btn-primary">Sortir du stock</button></li>
+             <li class="page-item"> <a class="page-link"><?php 
+		          	if(isset($newstate)){
+                  if($newstate == "true"){
+                    echo "En stock";
+                  }else{
+                    echo "Hors stock";
+                  }
+			          }else{
+                  if($objinfo['instock'] == "true"){
+                    echo "En stock";
+                  }else{
+                    echo "Hors stock";
+                  }
+			          }	
+			          ?></a></li>
+            <li class="page-item"> <button type="submit" name="plus1" class="btn btn-primary">Rentrer dans le stock</button></li>
           </ul>
-		</form>
+		    </form>
         </div>
       </div>
     </div>

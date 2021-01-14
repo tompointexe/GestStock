@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-
 <?php
-session_start();
 require('config.php');
-if(isset($_POST['formconnect']))
-	{
+if(isset($_POST['formconnect'])){
 		$mailconnect = htmlspecialchars($_POST['mailconnect']);
 		$mdpconnect =sha1($_POST['mdp']);
 		if(!empty($mailconnect) AND !empty($mdpconnect))
 		{
-			$requser = $bdd->prepare("SELECT * FROM membres WHERE username = ? AND password = ?");
+			$requser = $bdd->prepare("SELECT * FROM membres WHERE `username` = ? AND `password` = ?");
 			$requser->execute(array($mailconnect, $mdpconnect));
 			$userexist = $requser->rowCount();
 			if($userexist ==1)
@@ -62,6 +58,8 @@ if(isset($_POST['formconnect']))
 			if(isset($erreur))
 			{
 				echo '<font color="red">'.$erreur."</font>";
+			}else{
+
 			}
 			?>
             <div class="form-group"> <input type="text" name="mailconnect" class="form-control" placeholder="Nom d'utilisateur" id="form9"> </div>

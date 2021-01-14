@@ -1,17 +1,14 @@
 <?php
-session_start();
 require('config.php');
 $req = $bdd->query('SELECT * FROM objets');
 
-if ($_COOKIE['IdUserStock'] > 0) {
-    $id = $_COOKIE['IdUserStock'];
-	$requser = $bdd->prepare("SELECT * FROM membre WHERE id = ? ");
+if (isset( $_SESSION[ 'id' ] ) && $_SESSION['id'] > 0) {
+  $id = $_SESSION['id'];
+	$requser = $bdd->prepare("SELECT * FROM membre WHERE `id` = ? ");
 	$requser->execute(array($id));
 	$userinfo = $requser->fetch();
-}
 ?>
 
-<!DOCTYPE html>
 <html>
 
 <head>
@@ -32,11 +29,14 @@ if ($_COOKIE['IdUserStock'] > 0) {
       <div class="collapse navbar-collapse" id="navbar11">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active"> <a class="nav-link" href="interface.php"><i class="fa fa-lg fa-list-ul"></i> Inventaire</a> </li>
-          <li class="nav-item"> <a class="nav-link" href="ajouter.php"> <i class="fa fa-lg fa-plus"></i> Ajouter un objet</a> </li>
+          <?php
+			      if($userinfo['admin'] == 1){ ?>
+              <li class="nav-item"> <a class="nav-link" href="ajouter.php"> <i class="fa fa-lg fa-plus"></i> Ajouter un objet</a> </li>
+			      <?php }else{} ?>
           <li class="nav-item"> <a class="nav-link" href="search.php"> <i class="fa fa-lg fa-barcode"></i> Scanner un objet<br></a> </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="http://stocks.example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo $userinfo['username'];?> </a>
+          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo $_SESSION['pseudo'];?> </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Something else here</a> </div>
           </li>
         </ul>
@@ -54,16 +54,21 @@ if ($_COOKIE['IdUserStock'] > 0) {
                   <th>Objet</th>
                   <th>Description</th>
                   <th>Numero dans le stock</th>
-				  <th>Quantité en stock</th>
+				          <th>En stock ?</th>
                   <th>Plus d'info</th>
                 </tr>
               </thead>
               <tbody>
                 <?php while($row = $req->fetch()){ ?>
-        <td><?php echo $row['denomination']; ?></td>
-        <td><?php echo $row['description']; ?></td>
-        <td><?php echo $row['barcode']; ?></td>
-        <td><?php echo $row['quantité']; ?></td>
+                <td><?php echo $row['denomination']; ?></td>
+                <td><?php echo $row['description']; ?></td>
+                <td><?php echo $row['barcode']; ?></td>
+                <td><?php if($row['instock'] == "true"){
+                       echo "Oui";
+                    }else{
+                       echo "Non";
+                    }?>
+                </td>
         <td><?php echo '<a class="btn btn-info" href="info.php?id='.$row['id'].'">Editer</a><br/>'; ?></td>
         </tr>
         <?php
@@ -80,6 +85,13 @@ if ($_COOKIE['IdUserStock'] > 0) {
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-</body>
+
+  </body>
 
 </html>
+<?php
+}else{
+
+header("Location: index.php");
+
+}?>
