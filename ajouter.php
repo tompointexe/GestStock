@@ -25,10 +25,11 @@ if(isset($_POST['AjouterObjet'])){
   <link rel="stylesheet" href="ajouter.css" type="text/css">
   <title>Ajouter un objet au stock</title>
 </head>
-
+<?php if(isset($_GET['id']) AND $_GET['id'] > 0){ ?>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container"> <a class="navbar-brand" href="#">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container"> 
+	 <a class="navbar-brand" href="#">
         <i class="fa d-inline fa-lg fa-circle-o"></i>
         <b> GestionDeStockDEOUF</b>
       </a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbar11">
@@ -41,8 +42,13 @@ if(isset($_POST['AjouterObjet'])){
           <li class="nav-item"> <a class="nav-link" href="search.php"> <i class="fa fa-lg fa-barcode"></i> Scanner un objet<br></a> </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Dropdown link </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Something else here</a> </div>
+          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo $_SESSION['username'];?> </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> 
+			<!--  TODO : Menu -->
+				<a class="dropdown-item" href="#">Action</a> 
+				<a class="dropdown-item" href="#">Another action</a> 
+				<a class="dropdown-item" href="#">Something else here</a> 
+			</div>
           </li>
         </ul>
       </div>
@@ -126,13 +132,13 @@ if(isset($_POST['AjouterObjet'])){
             <button type="submit" name="AjouterObjet" class="btn btn-primary">Ajouter l'objet au stock</button>
           </form>
 
-		  <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
-    <script type="text/javascript">
-        window.addEventListener('load', function () {
-            let selectedDeviceId;
-            const codeReader = new ZXing.BrowserBarcodeReader()
-            console.log('ZXing code reader initialized')
-            codeReader.getVideoInputDevices()
+	      <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
+          <script type="text/javascript">
+            window.addEventListener('load', function () {
+              let selectedDeviceId;
+              const codeReader = new ZXing.BrowserBarcodeReader()
+              console.log('ZXing code reader initialized')
+              codeReader.getVideoInputDevices()
                 .then((videoInputDevices) => {
                     const sourceSelect = document.getElementById('sourceSelect')
                     selectedDeviceId = videoInputDevices[0].deviceId
@@ -149,23 +155,22 @@ if(isset($_POST['AjouterObjet'])){
                         }
 
                         const sourceSelectPanel = document.getElementById('sourceSelectPanel')
-                        sourceSelectPanel.style.display = 'block'
+                        sourceSelectPanel.style.display = 'block';
                     }
 
                     document.getElementById('startButton').addEventListener('click', () => {
                         codeReader.decodeOnceFromVideoDevice(selectedDeviceId, 'video').then((result) => {
                             //console.log(result)
-                            document.getElementById('barcode').textContent = result.text
+                            document.getElementById('barcode').value = result.text;
                         }).catch((err) => {
                             console.error(err)
-                            document.getElementById('barcode').textContent = err
+                            document.getElementById('barcode').value = `Une erreur est survenue, merci de contacter le developpeur` ;
                         })
                         console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
                     })
 
                     document.getElementById('resetButton').addEventListener('click', () => {
-                        document.getElementById('result').textContent = '';
-                        ///codeReader.reset();
+                        codeReader.reset();
                         console.log('Reset.')
                     })
 
@@ -173,8 +178,8 @@ if(isset($_POST['AjouterObjet'])){
                 .catch((err) => {
                     console.error(err)
                 })
-        })
-    </script>
+            })
+          </script>
 		  <script type="text/javascript">
 					$(document).on('click', '.panel div.clickable', function (e) {
 						var $this = $(this); //Heading
@@ -206,5 +211,13 @@ if(isset($_POST['AjouterObjet'])){
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
+<?php }else { ?>
+
+<!-- TODO : Page d'erreur-->
+
+
+<?php } ?>
+	
+
 
 </html>

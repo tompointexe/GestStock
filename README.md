@@ -2,7 +2,7 @@
  Little website made for stock management in
  HTML / CSS / PHP / MYSQL
 
-Missing info.php( DONE :) ) and Search.php (currently being made :) )
+Missing info.php( DONE :) ) and Search.php (currently being made :) OR NOT !! )
 
 Please edit "config.php" before uploading the little site to your server
 

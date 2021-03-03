@@ -10,7 +10,7 @@ if (isset( $_SESSION[ 'id' ] ) && $_SESSION['id'] > 0) {
 ?>
 
 <html>
-
+<!--  TODO : Dark Theme -->
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,14 +36,21 @@ if (isset( $_SESSION[ 'id' ] ) && $_SESSION['id'] > 0) {
           <li class="nav-item"> <a class="nav-link" href="search.php"> <i class="fa fa-lg fa-barcode"></i> Scanner un objet<br></a> </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> "UserName" </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Something else here</a> </div>
+          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo $_SESSION['username'];?> </a> 
+          <!--  TODO : Page d'administration -->
+          <!--  TODO : Menu -->
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> 
+              <a class="dropdown-item" href="#">Action</a> 
+              <a class="dropdown-item" href="#">Another action</a> 
+              <a class="dropdown-item" href="#">Something else here</a> 
+            </div>
           </li>
         </ul>
       </div>
     </div>
   </nav>
   <div class="py-5">
+  <!--  TODO : Image d'ariere plan -->
     <div class="container">
       <div class="row">
         <div class="col-md-12">

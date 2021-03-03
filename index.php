@@ -13,7 +13,7 @@ if(isset($_POST['formconnect'])){
 
 				$userinfo = $requser->fetch();
 				$_SESSION['id'] = $userinfo['id'];
-				$_SESSION['pseudo'] = $userinfo['pseudo'];
+				$_SESSION['username'] = $userinfo['username'];
 				header("Location: interface.php");
 			}
 			else
@@ -36,7 +36,7 @@ if(isset($_POST['formconnect'])){
   <link rel="stylesheet" href="theme.css" type="text/css">
 </head>
 
-<body>
+<body style="background-image: url(&quot;https://mecaluxfr.cdnwm.com/blog/img/stock-minimum-entrepot-reapprovisionnement-marchandises.1.6.jpg&quot;);">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container"> <a class="navbar-brand" href="#">
         <i class="fa d-inline fa-lg fa-circle-o"></i>
@@ -48,7 +48,7 @@ if(isset($_POST['formconnect'])){
       </div>
     </div>
   </nav>
-  <div class="py-5 text-center" style="background-image: url(&quot;https://static.pingendo.com/cover-bubble-dark.svg&quot;); background-size: cover; opacity: 0.5;">
+  <div class="py-5 text-center">
     <div class="container">
       <div class="row">
         <div class="mx-auto col-md-6 col-10 bg-white p-5">
