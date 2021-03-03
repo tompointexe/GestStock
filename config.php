@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 
 $dbhost = "localhost";
 $dbuser = "geststock";
-$dbpass = "K6QivuccKWvE4DLA";
+$dbpass = "My!Secure!Password";
 $dbname = "geststock";
 $bdd = new PDO('mysql:host='.$dbhost.';dbname='.$dbname, $dbuser, $dbpass);
 $bdd->exec("SET CHARACTER SET utf8");
