@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.5
+-- version 4.9.5deb2
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Jan 14, 2021 at 03:51 PM
--- Server version: 5.7.24
--- PHP Version: 7.4.1
+-- Hôte : localhost:3306
+-- Généré le : mar. 16 mars 2021 à 10:46
+-- Version du serveur :  10.3.25-MariaDB-0ubuntu0.20.04.1
+-- Version de PHP : 7.4.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `geststock`
+-- Base de données : `geststock`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `membres`
+-- Structure de la table `membres`
 --
 
 CREATE TABLE `membres` (
@@ -36,17 +36,17 @@ CREATE TABLE `membres` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `membres`
+-- Déchargement des données de la table `membres`
 --
 
 INSERT INTO `membres` (`id`, `username`, `password`, `admin`) VALUES
-(1, 'admin', '2dd07c9ce0189aaacacff6a86a5fc61a8d38d851', 1),
-(2, 'nonadmin', '96d9b1d638697b5ceee01ff69930ac5e12a24d0b', 0);
+(1, 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1),
+(2, 'user', '12dea96fec20593566ab75692c9949596833adc9', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `objets`
+-- Structure de la table `objets`
 --
 
 CREATE TABLE `objets` (
@@ -54,47 +54,49 @@ CREATE TABLE `objets` (
   `denomination` text NOT NULL,
   `description` text NOT NULL,
   `instock` tinyint(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
   `barcode` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `objets`
+-- Déchargement des données de la table `objets`
 --
 
-INSERT INTO `objets` (`id`, `denomination`, `description`, `instock`, `barcode`) VALUES
-(1, 'Objet d\'exemple', 'Un objet qui sert comme exemple, on peut jouer avec', 1, '02115485457425');
+INSERT INTO `objets` (`id`, `denomination`, `description`, `instock`, `quantity`, `barcode`) VALUES
+(1, 'Objet d\'exemple', 'Un objet qui sert comme exemple, on peut jouer avec', 1, 1, '12345678901234'),
+(2, 'Piles energizer', 'Pack de 28', 0, 1, '7638900361056');
 
 --
--- Indexes for dumped tables
+-- Index pour les tables déchargées
 --
 
 --
--- Indexes for table `membres`
+-- Index pour la table `membres`
 --
 ALTER TABLE `membres`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `objets`
+-- Index pour la table `objets`
 --
 ALTER TABLE `objets`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
--- AUTO_INCREMENT for table `membres`
+-- AUTO_INCREMENT pour la table `membres`
 --
 ALTER TABLE `membres`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `objets`
+-- AUTO_INCREMENT pour la table `objets`
 --
 ALTER TABLE `objets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

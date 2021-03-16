@@ -41,7 +41,7 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
           <li class="nav-item"> <a class="nav-link" href="search.php"> <i class="fa fa-lg fa-barcode"></i> Scanner un objet<br></a> </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo $_SESSION['pseudo'];?> </a>
+          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo $_SESSION['username'];?> </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Something else here</a> </div>
           </li>
         </ul>
@@ -64,7 +64,7 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
         <div class="col-md-12">
 		    <form method="POST">
           <ul class="pagination">
-             <li class="page-item"> <button type="submit" name="moins1" class="btn btn-primary">Sortir du stock</button></li>
+             <li class="page-item"> <button type="submit" name="moins1" class="btn btn-primary">Sortir du stock</button> <p>    </p></li>
              <li class="page-item"> <a class="page-link"><?php 
 		          	if(isset($newstate)){
                   if($newstate == 1){
@@ -80,7 +80,7 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
                   }
 			          }	
 			          ?></a></li>
-            <li class="page-item"> <button type="submit" name="plus1" class="btn btn-primary">Rentrer dans le stock</button></li>
+            <li class="page-item"> <p>    </p> <button type="submit" name="plus1" class="btn btn-primary">Rentrer dans le stock</button></li>
           </ul>
 		    </form>
         </div>
@@ -107,7 +107,7 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
 }else { 
 ?>
 	<font color="#ff0000"><H1>Erreur</H1></font>
-	<H2>Impossible d'afficher l'objet, redirection vers la page d'accueilH2>
+	<H2>Impossible d'afficher l'objet, redirection vers la page d'accueil <H2>
 <?php
 	header("Location: interface.php");
 }

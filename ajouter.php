@@ -7,8 +7,8 @@ if(isset($_POST['AjouterObjet'])){
 			$description = htmlspecialchars($_POST['desc']);
 			$quantite = htmlspecialchars($_POST['quantity']);
 
-				$insertobj = $bdd->prepare("INSERT INTO objets(barcode, denomination, description, instock) VALUES(?, ?, ?, ?)");
-				$insertobj->execute(array($id, $denomination, $description, $quantite));
+				$insertobj = $bdd->prepare("INSERT INTO objets(barcode, denomination, description, instock, quantity) VALUES(?, ?, ?, ?, ?)");
+				$insertobj->execute(array($id, $denomination, $description, $quantite, 1));
 				$ok = "L'objet a bien été ajouté";
 	 }else {
 	 	$erreur = "Vous devez remplir tout les champs";
@@ -110,7 +110,7 @@ if(isset($_POST['AjouterObjet'])){
                 						  	 </select>
            								 </div>
 										<br>
-										</div>
+									</div>
 								</div>
 							</div>
 						</div>
