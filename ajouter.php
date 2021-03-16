@@ -7,8 +7,8 @@ if(isset($_POST['AjouterObjet'])){
 			$description = htmlspecialchars($_POST['desc']);
 			$quantite = htmlspecialchars($_POST['quantity']);
 
-				$insertobj = $bdd->prepare("INSERT INTO objets(barcode, denomination, description, quantité) VALUES(?, ?, ?, ?)");
-				$insertobj->execute(array($id, $denomination, $description, $quantite));
+				$insertobj = $bdd->prepare("INSERT INTO objets(barcode, denomination, description, instock, quantity) VALUES(?, ?, ?, ?, ?)");
+				$insertobj->execute(array($id, $denomination, $description, $quantite, 1));
 				$ok = "L'objet a bien été ajouté";
 	 }else {
 	 	$erreur = "Vous devez remplir tout les champs";
@@ -25,10 +25,11 @@ if(isset($_POST['AjouterObjet'])){
   <link rel="stylesheet" href="ajouter.css" type="text/css">
   <title>Ajouter un objet au stock</title>
 </head>
-
+<?php if(isset($_GET['id']) AND $_GET['id'] > 0){ ?>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container"> <a class="navbar-brand" href="#">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container"> 
+	 <a class="navbar-brand" href="#">
         <i class="fa d-inline fa-lg fa-circle-o"></i>
         <b> GestionDeStockDEOUF</b>
       </a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbar11">
@@ -41,8 +42,13 @@ if(isset($_POST['AjouterObjet'])){
           <li class="nav-item"> <a class="nav-link" href="search.php"> <i class="fa fa-lg fa-barcode"></i> Scanner un objet<br></a> </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Dropdown link </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Something else here</a> </div>
+          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo $_SESSION['username'];?> </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> 
+			<!--  TODO : Menu -->
+				<a class="dropdown-item" href="#">Action</a> 
+				<a class="dropdown-item" href="#">Another action</a> 
+				<a class="dropdown-item" href="#">Something else here</a> 
+			</div>
           </li>
         </ul>
       </div>
@@ -72,8 +78,8 @@ if(isset($_POST['AjouterObjet'])){
 			<input type="text" name="desc" class="form-control" id="desc" placeholder="Ecran de télévision samsung averc cable">
 			</div>
 			<div class="form-group">
-			<label for="form16" class="text-light">Quantité totale</label>
-			<input type="text" name="quantity" class="form-control" id="quantity" placeholder="50">
+			<label for="form16" class="text-light">En stock ?</label>
+			<input type="text" name="quantity" class="form-control" id="quantity" placeholder="A changer par un dropdown avec oui ou non ou inconnu">
 			</div>
       <div class="form-group">
 			<label for="form17" class="text-light">Code barre</label> <input type="text" name="id" class="form-control" id="barcode" placeholder="Id de l'objet">
@@ -92,15 +98,19 @@ if(isset($_POST['AjouterObjet'])){
 									<div class="form-group">
 										<div class="col-md-4">
 											<a class="btn text-light btn-primary" id="startButton">Démarer le scanner</a>
+											<a class="btn text-light btn-primary" id="resetButton">Aréter le scanner</a>
 										</div>
 										<br>
-										<div id="sourceSelectPanel" style="display:none">
-											<label class="text-light" for="sourceSelect">Change video source:</label></br>
-											<select id="sourceSelect" style="max-width:400px"></select>
-										</div>
 										<video id="video" width="300" height="200" style="border: 1px solid gray"></video>
 										<br>
-										</div>
+										<br>
+										<div id="sourceSelectPanel" style="display:none">
+               								 <label for="sourceSelect" style="color:white;">Change video source:</label>
+            								 <select id="sourceSelect" style="max-width:400px">
+                						  	 </select>
+           								 </div>
+										<br>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -121,51 +131,54 @@ if(isset($_POST['AjouterObjet'])){
 			</div>
             <button type="submit" name="AjouterObjet" class="btn btn-primary">Ajouter l'objet au stock</button>
           </form>
-          <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
-          <script type="text/javascript">
-            window.addEventListener('load', function() {
-              let selectedDeviceId;
-              const codeReader = new ZXing.BrowserMultiFormatReader()
-              console.log('ZXing code reader initialized')
-              codeReader.getVideoInputDevices().then((videoInputDevices) => {
-                const sourceSelect = document.getElementById('sourceSelect')
-                selectedDeviceId = videoInputDevices[0].deviceId
-                if (videoInputDevices.length >= 1) {
-                  videoInputDevices.forEach((element) => {
-                    const sourceOption = document.createElement('option')
-                    sourceOption.text = element.label
-                    sourceOption.value = element.deviceId
-                    sourceSelect.appendChild(sourceOption)
-                  })
-                  sourceSelect.onchange = () => {
-                    selectedDeviceId = sourceSelect.value;
-                  };
-                  const sourceSelectPanel = document.getElementById('sourceSelectPanel')
-                  sourceSelectPanel.style.display = 'block'
-                }
-                document.getElementById('startButton').addEventListener('click', () => {
-                  codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
-                    if (result) {
-                      console.log(result)
-                      document.getElementById('barcode').value = result.text
-                    }
-                    if (err && !(err instanceof ZXing.NotFoundException)) {
-                      console.error(err)
-                      document.getElementById('barcode').value = err
-                    }
-                  })
-                  console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
-                })
-                document.getElementById('resetButton').addEventListener('click', () => {
-                  codeReader.reset()
-                  document.getElementById('barcode').value = '';
-                  console.log('Reset.')
-                })
-              }).catch((err) => {
-                console.error(err)
-              })
-            })
 
+	      <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
+          <script type="text/javascript">
+            window.addEventListener('load', function () {
+              let selectedDeviceId;
+              const codeReader = new ZXing.BrowserBarcodeReader()
+              console.log('ZXing code reader initialized')
+              codeReader.getVideoInputDevices()
+                .then((videoInputDevices) => {
+                    const sourceSelect = document.getElementById('sourceSelect')
+                    selectedDeviceId = videoInputDevices[0].deviceId
+                    if (videoInputDevices.length > 1) {
+                        videoInputDevices.forEach((element) => {
+                            const sourceOption = document.createElement('option')
+                            sourceOption.text = element.label
+                            sourceOption.value = element.deviceId
+                            sourceSelect.appendChild(sourceOption)
+                        })
+
+                        sourceSelect.onchange = () => {
+                            selectedDeviceId = sourceSelect.value;
+                        }
+
+                        const sourceSelectPanel = document.getElementById('sourceSelectPanel')
+                        sourceSelectPanel.style.display = 'block';
+                    }
+
+                    document.getElementById('startButton').addEventListener('click', () => {
+                        codeReader.decodeOnceFromVideoDevice(selectedDeviceId, 'video').then((result) => {
+                            //console.log(result)
+                            document.getElementById('barcode').value = result.text;
+                        }).catch((err) => {
+                            console.error(err)
+                            document.getElementById('barcode').value = `Une erreur est survenue, merci de contacter le developpeur` ;
+                        })
+                        console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
+                    })
+
+                    document.getElementById('resetButton').addEventListener('click', () => {
+                        codeReader.reset();
+                        console.log('Reset.')
+                    })
+
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+            })
           </script>
 		  <script type="text/javascript">
 					$(document).on('click', '.panel div.clickable', function (e) {
@@ -198,5 +211,13 @@ if(isset($_POST['AjouterObjet'])){
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
+<?php }else { ?>
+
+<!-- TODO : Page d'erreur-->
+
+
+<?php } ?>
+	
+
 
 </html>

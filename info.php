@@ -6,14 +6,14 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
 	$req->execute(array($objid));
 	$objinfo = $req->fetch();
 	if(isset($_POST['moins1'])){
-	$newquantity = $objinfo['quantité'] - 1;
-	$updatecount = $bdd->prepare("UPDATE objets SET quantité = ? WHERE id = ? ");
-    $updatecount->execute(array($newquantity, $objid));
+  $newstate = 0;
+	$updatecount = $bdd->prepare("UPDATE objets SET instock = ? WHERE id = ? ");
+  $updatecount->execute(array($newstate, $objid));
 	}
 	if(isset($_POST['plus1'])){
-	$newquantity = $objinfo['quantité'] + 1;
-	$updatecount = $bdd->prepare("UPDATE objets SET quantité = ? WHERE id = ? ");
-    $updatecount->execute(array($newquantity, $objid));
+  $newstate = 1;
+	$updatecount = $bdd->prepare("UPDATE objets SET instock = ? WHERE id = ? ");
+  $updatecount->execute(array($newstate, $objid));
 	}
 	
 	
@@ -41,8 +41,13 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
           <li class="nav-item"> <a class="nav-link" href="search.php"> <i class="fa fa-lg fa-barcode"></i> Scanner un objet<br></a> </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Dropdown link </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Something else here</a> </div>
+          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo $_SESSION['username'];?> </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> 
+            <!--  TODO : Menu -->
+              <a class="dropdown-item" href="#">Action</a> 
+              <a class="dropdown-item" href="#">Another action</a> 
+              <a class="dropdown-item" href="#">Something else here</a> 
+            </div>
           </li>
         </ul>
       </div>
@@ -62,19 +67,27 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-		<form method="POST">
+		    <form method="POST">
           <ul class="pagination">
-            <li class="page-item"> <button type="submit" name="moins1" class="btn btn-primary">-1</button></li>
-            <li class="page-item"> <a class="page-link"><?php 
-			if(isset($newquantity)){
-			echo $newquantity;
-			}else{
-			echo $objinfo['quantité'];
-			}	
-			?></a></li>
-            <li class="page-item"> <button type="submit" name="plus1" class="btn btn-primary">+1</button></li>
+             <li class="page-item"> <button type="submit" name="moins1" class="btn btn-primary">Sortir du stock</button> <p>    </p></li>
+             <li class="page-item"> <a class="page-link"><?php 
+		          	if(isset($newstate)){
+                  if($newstate == 1){
+                    echo "En stock";
+                  }else{
+                    echo "Hors stock";
+                  }
+			          }else{
+                  if($objinfo['instock'] == 1){
+                    echo "En stock";
+                  }else{
+                    echo "Hors stock";
+                  }
+			          }	
+			          ?></a></li>
+            <li class="page-item"> <p>    </p> <button type="submit" name="plus1" class="btn btn-primary">Rentrer dans le stock</button></li>
           </ul>
-		</form>
+		    </form>
         </div>
       </div>
     </div>
@@ -83,11 +96,15 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
     <div class="container">
       <div class="row">
         <div class="col-md-12">
+        <!--  TODO : Responsive + taile auto -->
           <h2 class=""><?php echo $objinfo['description'];?></h2>
         </div>
       </div>
     </div>
   </div>
+
+  <!--  TODO : Afficher le code bare / générer -->
+
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -95,7 +112,7 @@ if(isset($_GET['id']) AND $_GET['id'] > 0){
 }else { 
 ?>
 	<font color="#ff0000"><H1>Erreur</H1></font>
-	<H2>Impossible d'afficher l'objet, redirection vers la page d'accueilH2>
+	<H2>Impossible d'afficher l'objet, redirection vers la page d'accueil <H2>
 <?php
 	header("Location: interface.php");
 }
