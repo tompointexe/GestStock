@@ -6,9 +6,14 @@ if(isset($_POST['AjouterObjet'])){
 			$denomination = htmlspecialchars($_POST['name']);
 			$description = htmlspecialchars($_POST['desc']);
 			$quantite = htmlspecialchars($_POST['quantity']);
-
+			$enstock = htmlspecialchars($_POST['instock']);
+			if( $enstock = "yes" ){
+				$dbstock = 1;
+			} else{
+				$dbstock = 0;
+			}
 				$insertobj = $bdd->prepare("INSERT INTO objets(barcode, denomination, description, instock, quantity) VALUES(?, ?, ?, ?, ?)");
-				$insertobj->execute(array($id, $denomination, $description, $quantite, 1));
+				$insertobj->execute(array($id, $denomination, $description, $quantite, $dbstock, 1));
 				$ok = "L'objet a bien été ajouté";
 	 }else {
 	 	$erreur = "Vous devez remplir tout les champs";
@@ -79,7 +84,10 @@ if(isset($_POST['AjouterObjet'])){
 			</div>
 			<div class="form-group">
 			<label for="form16" class="text-light">En stock ?</label>
-			<input type="text" name="quantity" class="form-control" id="quantity" placeholder="A changer par un dropdown avec oui ou non ou inconnu">
+  				<select id="instock" name="instock">
+    			    <option value="yes">Oui</option>
+   					<option value="no">Non</option>
+  				</select>
 			</div>
       <div class="form-group">
 			<label for="form17" class="text-light">Code barre</label> <input type="text" name="id" class="form-control" id="barcode" placeholder="Id de l'objet">
@@ -213,7 +221,7 @@ if(isset($_POST['AjouterObjet'])){
 </body>
 <?php }else { ?>
 
-<!-- TODO : Page d'erreur-->
+<!-- TODO : Page d'erreur -->
 
 
 <?php } ?>
