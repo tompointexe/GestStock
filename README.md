@@ -10,8 +10,16 @@ DO NOT USE FOR / IN PRODUCTION SYSTEMS AT THE MOMENT
 
 Any Merge request are welcome to help
 
-TODO:
+ # Install Guide #
 
+ TODO
+
+
+
+ ## TODO: ##
+
+- [ ] Install guide
+- [ ] Documentation / Wiki 
 - [ ] Auto refreshing of interface.php
 - [ ] autoupdate script to run as crontab to tell the user that there is an update for the code
 - [ ] a button to auto-update

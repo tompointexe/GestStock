@@ -42,7 +42,7 @@ if (isset( $_SESSION[ 'id' ] ) && $_SESSION['id'] > 0) {
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> 
               <a class="dropdown-item" href="#">Action</a> 
               <a class="dropdown-item" href="#">Another action</a> 
-              <a class="dropdown-item" href="#">Something else here</a> 
+              <a class="dropdown-item" href="deconnection.php">Deconnection</a> 
             </div>
           </li>
         </ul>
